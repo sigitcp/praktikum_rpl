@@ -9,14 +9,14 @@ class MenuController extends Controller
 {
     /**
      * Menampilkan semua data menu.
-     * View: admin.menu
+     * View yang dipakai: admin.menu
      */
     public function index()
     {
-        // Ambil semua data dari table menus
+        // Mengambil semua data dari tabel "menus"
         $menus = Menu::all();
 
-        // Kirim data ke view
+        // Mengirimkan data ke view menggunakan compact()
         return view('admin.menu', compact('menus'));
     }
 
@@ -26,99 +26,100 @@ class MenuController extends Controller
      */
     public function create()
     {
+        // Hanya menampilkan halaman form tambah menu
         return view('admin.create');
     }
 
     /**
      * Menyimpan data menu baru ke database.
-     * Redirect: admin.menu
      */
     public function store(Request $request)
     {
-        // Validasi inputan form
+        // Validasi input dari form
         $request->validate([
-            'nama_menu' => 'required|unique:menus,nama_menu|max:225',
-            'harga' => 'required|numeric',
-            'deskripsi' => 'required|max:225',
-            'stok' => 'required|integer|min:0',
+            'nama_menu'   => 'required|unique:menus,nama_menu|max:225', // wajib, unik, max 225 karakter
+            'harga'       => 'required|numeric',                        // harus berupa angka
+            'deskripsi'   => 'required|max:225',                        // wajib dan max 225 karakter
+            'stok'        => 'required|integer|min:0',                  // harus integer dan minimal 0
         ], [
-            // Custom message
+            // Pesan error custom
             'nama_menu.required' => 'Nama menu wajib diisi.',
-            'harga.required' => 'Harga wajib diisi.',
+            'harga.required'     => 'Harga wajib diisi.',
             'deskripsi.required' => 'Deskripsi wajib diisi.',
-            'stok.required' => 'Stok wajib diisi.',
+            'stok.required'      => 'Stok wajib diisi.',
         ]);
 
-        // Simpan ke database
+        // Simpan data baru ke database (mass assignment)
         Menu::create([
             'nama_menu' => $request->nama_menu,
-            'harga' => $request->harga,
+            'harga'     => $request->harga,
             'deskripsi' => $request->deskripsi,
-            'stok' => $request->stok,
+            'stok'      => $request->stok,
         ]);
 
-        // Redirect dengan message sukses
+        // Redirect kembali ke halaman menu dengan pesan sukses
         return redirect('/menu')->with('success', 'Menu berhasil ditambahkan!');
     }
 
     /**
-     * Menampilkan form edit data menu.
+     * Menampilkan form edit menu.
      * View: admin.edit
      */
     public function edit($id)
     {
-        // Ambil data sesuai ID
+        // Mencari data menu berdasarkan ID, jika tidak ada akan error 404
         $menu = Menu::findOrFail($id);
 
+        // Kirim data menu ke form edit
         return view('admin.edit', compact('menu'));
     }
 
     /**
-     * Update data menu berdasarkan ID.
-     * Redirect: admin.menu
+     * Mengupdate data menu berdasarkan ID.
      */
     public function update(Request $request, $id)
     {
-        // Validasi data yang diperbarui
+        // Validasi data yang dikirim dari form edit
         $request->validate([
-            'nama_menu' => 'required|max:225',
-            'harga' => 'required|numeric',
-            'deskripsi' => 'required|max:225',
-            'stok' => 'required|integer|min:0',
+            'nama_menu'   => 'required|max:225',
+            'harga'       => 'required|numeric',
+            'deskripsi'   => 'required|max:225',
+            'stok'        => 'required|integer|min:0',
         ], [
-            // Custom message
+            // Pesan error custom
             'nama_menu.required' => 'Nama menu wajib diisi.',
-            'harga.required' => 'Harga wajib diisi.',
+            'harga.required'     => 'Harga wajib diisi.',
             'deskripsi.required' => 'Deskripsi wajib diisi.',
-            'stok.required' => 'Stok wajib diisi.',
+            'stok.required'      => 'Stok wajib diisi.',
         ]);
 
-        // Cari data menu
+        // Ambil data menu yang ingin diupdate
         $menu = Menu::findOrFail($id);
 
-        // Update data
+        // Update data menu
         $menu->update([
             'nama_menu' => $request->nama_menu,
-            'harga' => $request->harga,
+            'harga'     => $request->harga,
             'deskripsi' => $request->deskripsi,
-            'stok' => $request->stok,
+            'stok'      => $request->stok,
         ]);
 
+        // Redirect dengan pesan sukses
         return redirect('/menu')->with('success', 'Menu berhasil diperbarui!');
     }
 
     /**
-     * Hapus data menu.
-     * Redirect: admin.menu
+     * Menghapus data menu berdasarkan ID.
      */
     public function destroy($id)
     {
-        // Cari data menu
+        // Cari menu berdasarkan ID
         $menu = Menu::findOrFail($id);
 
-        // Hapus data
+        // Hapus data menu
         $menu->delete();
 
+        // Redirect ke halaman menu dengan notifikasi berhasil
         return redirect('/menu')->with('success', 'Menu berhasil dihapus!');
     }
 }

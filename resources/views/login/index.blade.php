@@ -52,18 +52,12 @@
                                     </div>
                                     @endif
 
-                                    {{-- ALERT SUCCESS (JIKA HABIS LOGOUT) --}}
-                                    @if (session('success'))
-                                    <div class="alert alert-success">
-                                        {{ session('success') }}
-                                    </div>
-                                    @endif
                                     <form class="user" action="/login" method="POST">
                                         @csrf
 
                                         <div class="form-group">
                                             <input type="email" name="email" class="form-control form-control-user"
-                                                placeholder="Enter Email Address...">
+                                                placeholder="Enter Email Address..." value="{{ old('email') }}">
                                         </div>
 
                                         <div class="form-group">
@@ -74,6 +68,7 @@
                                         <button class="btn btn-primary btn-user btn-block">
                                             Login
                                         </button>
+
                                     </form>
 
                                 </div>

@@ -17,3 +17,42 @@ class UserSeeder extends Seeder
         ]);
     }
 }
+
+
+
+
+// class UserSeeder extends Seeder
+// {
+//     /**
+//      * Method run()
+//      * Akan dijalankan ketika seeder dieksekusi.
+//      */
+//     public function run(): void
+//     {
+//         // Insert data user ke dalam tabel users
+//         DB::table('users')->insert([
+//             [
+//                 // Username untuk login admin
+//                 'username' => 'admin',
+//                 // Email admin
+//                 'email' => 'admin@gmail.com',
+//                 // Password dienkripsi agar aman (tidak disimpan sebagai teks biasa)
+//                 'password' => Hash::make('password123'),
+//             ],
+
+//             [
+//                 // User kedua (misalnya staff)
+//                 'username' => 'staff',
+//                 'email' => 'staff@gmail.com',
+//                 'password' => Hash::make('staff123'),
+//             ],
+
+//             [
+//                 // User ketiga
+//                 'username' => 'owner',
+//                 'email' => 'owner@gmail.com',
+//                 'password' => Hash::make('owner123'),
+//             ],
+//         ]);
+//     }
+// }
